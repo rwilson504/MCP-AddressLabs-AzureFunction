@@ -1,7 +1,7 @@
 <!--
 ---
-name: Remote MCP with Azure Functions (.NET/C#)
-description: Run a remote MCP server on Azure functions.  
+name: AddressLabs MCP Server on Azure functions
+description: Run a remote Address Labs MCP server on Azure functions.  
 page_type: sample
 languages:
 - csharp
@@ -13,6 +13,24 @@ products:
 urlFragment: remote-mcp-functions-dotnet
 ---
 -->
+
+<!-- Introduction: what this MCP server is dedicated to -->
+## Introduction
+
+Address parsing is not rocket surgery!
+
+Free and simple API to integrate parsing of unstructured United States addresses into your applications.
+
+---
+
+This MCP server is dedicated to helping developers:
+
+- Parse unstructured address data
+- Format addresses based on USPS guidelines
+- Use a hosted API with no software to install or update
+- Integrate easily with minimal setup
+
+Use this server to normalize and validate free-form US addresses before storing, displaying, or sending them to downstream systems.
 
 # Getting Started with Remote MCP Servers using Azure Functions (.NET/C#)
 
@@ -186,46 +204,3 @@ When you're done working with your function app and related resources, you can u
 ```shell
 azd down
 ```
-
-
-## Source Code
-
-The function code for the `GetSnippet` and `SaveSnippet` endpoints are defined in [`SnippetsTool.cs`](./src/SnippetsTool.cs). The `McpToolsTrigger` attribute applied to the async `Run` method exposes the code function as an MCP Server.
-
-This shows the code for a few MCP server examples (get string, get object, save object):  
-
-```csharp
-[Function(nameof(SayHello))]
-public string SayHello(
-    [McpToolTrigger(HelloToolName, HelloToolDescription)] ToolInvocationContext context
-)
-{
-    logger.LogInformation("Saying hello");
-    return "Hello I am MCP Tool!";
-}
-
-[Function(nameof(GetSnippet))]
-public object GetSnippet(
-    [McpToolTrigger(GetSnippetToolName, GetSnippetToolDescription)] ToolInvocationContext context,
-    [BlobInput(BlobPath)] string snippetContent)
-{
-    return snippetContent;
-}
-
-[Function(nameof(SaveSnippet))]
-[BlobOutput(BlobPath)]
-public string SaveSnippet(
-    [McpToolTrigger(SaveSnippetToolName, SaveSnippetToolDescription)] ToolInvocationContext context,
-    [McpToolProperty(SnippetNamePropertyName, PropertyType, SnippetNamePropertyDescription)] string name,
-    [McpToolProperty(SnippetPropertyName, PropertyType, SnippetPropertyDescription)] string snippet)
-{
-    return snippet;
-}
-```
-
-## Next Steps
-
-- Add [API Management]() to your MCP server
-- Add [EasyAuth]() to your MCP server
-- Enable VNET using VNET_ENABLED=true flag
-- Learn more about [related MCP efforts from Microsoft]()
